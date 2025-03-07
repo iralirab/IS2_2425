@@ -9,7 +9,6 @@ import java.util.List;
  * puede tener vehiculos a su nombre
  */
 public class Contribuyente {
-
 	private String dni;
     private String nombre;
     private String apellido1;
@@ -17,9 +16,11 @@ public class Contribuyente {
     
     private List<Vehiculo> vehiculos = new LinkedList<Vehiculo>();
 
-    //TODO
     public Contribuyente(String nombre, String apellido1, String apellido2, String dni) {
-		//TODO
+    	this.dni = dni;
+    	this.nombre = nombre;
+    	this.apellido1 = apellido1;
+    	this.apellido2 = apellido2;
 	}
     
     /**
@@ -83,7 +84,6 @@ public class Contribuyente {
     		if (v.getMatricula().equals(matricula))
     			return v;
     	}
-    	return null;
-    		
+    	return null;		
     }
 }
