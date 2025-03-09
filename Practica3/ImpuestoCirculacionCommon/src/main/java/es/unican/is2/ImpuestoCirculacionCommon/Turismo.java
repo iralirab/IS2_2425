@@ -9,6 +9,14 @@ public class Turismo extends Vehiculo {
 
 	private double potencia;
 	
+	/**
+	 * Crea un vehiculo de turismo.
+	 * @param id El identificador del vehiculo.
+	 * @param matricula La matricula del vehiculo.
+	 * @param fechaMatriculacion Fecha de matriculacion del vehiculo.
+	 * @param motor Tipo de motor que tiene el vehiculo.
+	 * @param potencia La potencia en caballos del vehiculo.
+	 */
 	public Turismo(long id, String matricula, LocalDate fechaMatriculacion, TipoMotor motor, double potencia) {
 		super(id, matricula, fechaMatriculacion, motor);
 		this.potencia = potencia;
@@ -21,6 +29,10 @@ public class Turismo extends Vehiculo {
 		return potencia;
 	}
 
+	/**
+	 * Obtiene el precio impuesto del vehiculo segun sus caracteristicas.
+	 * @returns el precio impuesto del vehiculo segun sus caracteristicas.
+	 */
 	@Override
 	public double precioImpuesto() {
 		int anhoMatriculacion = this.getFechaMatriculacion().getYear();

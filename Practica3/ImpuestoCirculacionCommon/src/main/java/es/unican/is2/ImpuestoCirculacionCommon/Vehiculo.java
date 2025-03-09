@@ -7,14 +7,19 @@ import java.time.LocalDate;
  * Cada vehiculo tiene una matricula unica.
  */
 public abstract class Vehiculo {
-
-	// Clave primaria autogenerada
 	private long id;
 
 	private String matricula;
 	private LocalDate fechaMatriculacion;
 	private TipoMotor motor;
 	
+	/**
+	 * Crea un vehiculo.
+	 * @param id El identificador del vehiculo.
+	 * @param matricula La matricula del vehiculo.
+	 * @param fechaMatriculacion Fecha de matriculacion del vehiculo.
+	 * @param motor Tipo de motor que tiene el vehiculo.
+	 */
 	public Vehiculo(long id, String matricula, LocalDate fechaMatriculacion, TipoMotor motor) {
 		this.id = id;
 		this.matricula = matricula;
@@ -51,5 +56,4 @@ public abstract class Vehiculo {
 	}
 
 	public abstract double precioImpuesto();
-
 }

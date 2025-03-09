@@ -16,6 +16,13 @@ public class Contribuyente {
     
     private List<Vehiculo> vehiculos = new LinkedList<Vehiculo>();
 
+    /**
+     * Crea un contribuyente.
+     * @param nombre El nombre del contribuyente.
+     * @param apellido1 El primer apellido del contribuyente.
+     * @param apellido2 El segundo apellido del contribuyente.
+     * @param dni El DNI del contribuyente.
+     */
     public Contribuyente(String nombre, String apellido1, String apellido2, String dni) {
     	this.dni = dni;
     	this.nombre = nombre;

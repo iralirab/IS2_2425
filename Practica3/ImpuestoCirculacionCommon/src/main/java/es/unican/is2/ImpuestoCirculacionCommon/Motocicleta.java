@@ -9,6 +9,14 @@ public class Motocicleta extends Vehiculo {
 
 	private int cilindrada;
 
+	/**
+	 * Crea una motocicleta.
+	 * @param id El identificador del vehiculo.
+	 * @param matricula La matricula del vehiculo.
+	 * @param fechaMatriculacion Fecha de matriculacion del vehiculo.
+	 * @param motor Tipo de motor que tiene el vehiculo.
+	 * @param cilindrada La cilindrada del vehiculo.
+	 */
 	public Motocicleta(long id, String matricula, LocalDate fechaMatriculacion, TipoMotor motor, int cilindrada) {
 		super(id, matricula, fechaMatriculacion, motor);
 		this.cilindrada = cilindrada;
@@ -21,6 +29,10 @@ public class Motocicleta extends Vehiculo {
 		return cilindrada;
 	}
 
+	/**
+	 * Obtiene el precio impuesto del vehiculo segun sus caracteristicas.
+	 * @returns el precio impuesto del vehiculo segun sus caracteristicas.
+	 */
 	@Override
 	public double precioImpuesto() {
 		int anhoMatriculacion = this.getFechaMatriculacion().getYear();
