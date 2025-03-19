@@ -25,7 +25,4 @@ public interface IGestionContribuyentes {
 	 * @throws DataAccessException Si hay error en el acceso a los datos
 	 */
 	public Contribuyente bajaContribuyente(String dni) throws OperacionNoValidaException, DataAccessException;
-	
-	
-
 }

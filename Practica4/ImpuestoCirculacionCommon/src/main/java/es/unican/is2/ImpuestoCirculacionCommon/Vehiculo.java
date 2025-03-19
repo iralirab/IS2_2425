@@ -19,8 +19,17 @@ public abstract class Vehiculo {
 	 * @param matricula La matricula del vehiculo.
 	 * @param fechaMatriculacion Fecha de matriculacion del vehiculo.
 	 * @param motor Tipo de motor que tiene el vehiculo.
+	 * @throws OperacionNoValidaException si alguno de los parametros es incorrecto.
 	 */
-	public Vehiculo(long id, String matricula, LocalDate fechaMatriculacion, TipoMotor motor) {
+	public Vehiculo(long id, String matricula, LocalDate fechaMatriculacion,
+			TipoMotor motor) throws OperacionNoValidaException {
+		if (id <= 0)
+			throw new OperacionNoValidaException("ID no valido!");
+		if (matricula == null)
+			throw new OperacionNoValidaException("Matricula no introducida!");
+		if (fechaMatriculacion == null || fechaMatriculacion.isAfter(LocalDate.now()))
+			throw new OperacionNoValidaException("Fecha incorrecta o no introducida!");
+		
 		this.id = id;
 		this.matricula = matricula;
 		this.fechaMatriculacion = fechaMatriculacion;

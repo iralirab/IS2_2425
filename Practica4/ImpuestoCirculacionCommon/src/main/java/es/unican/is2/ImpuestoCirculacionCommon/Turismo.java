@@ -16,9 +16,14 @@ public class Turismo extends Vehiculo {
 	 * @param fechaMatriculacion Fecha de matriculacion del vehiculo.
 	 * @param motor Tipo de motor que tiene el vehiculo.
 	 * @param potencia La potencia en caballos del vehiculo.
+	 * @throws OperacionNoValidaException si alguno de los datos es erroneo.
 	 */
-	public Turismo(long id, String matricula, LocalDate fechaMatriculacion, TipoMotor motor, double potencia) {
+	public Turismo(long id, String matricula, LocalDate fechaMatriculacion,
+			TipoMotor motor, double potencia) throws OperacionNoValidaException {
 		super(id, matricula, fechaMatriculacion, motor);
+		
+		if (potencia < 0)
+			throw new OperacionNoValidaException("Potencia menor a 0!");		
 		this.potencia = potencia;
 	}
 
@@ -35,26 +40,22 @@ public class Turismo extends Vehiculo {
 	 */
 	@Override
 	public double precioImpuesto() {
-		int anhoMatriculacion = this.getFechaMatriculacion().getYear();
-		int anho = LocalDate.now().getYear();
+		LocalDate anho = LocalDate.now();
 		
 		// Los vehiculos de 25 anhos o mas no pagan.
-		if (this.getFechaMatriculacion().getYear() < anho - 25) {
+		if (this.getFechaMatriculacion().isBefore(anho.minusYears(25)))
 			return 0;
-		}
 
 		// Variables.
 		double total;
 		TipoMotor tMotor = this.getMotor();
-		double bonificacion = tMotor.descuentoImpuesto;
+		double bonificacion = 0;
 		
 		// Descuentos especiales por tiempo.
-		if (tMotor.equals(TipoMotor.HIBRIDO)
-				&& anhoMatriculacion > anho - 4) {
-			bonificacion = 0.75;
-		} else if (tMotor.equals(TipoMotor.GAS)
-				&& anhoMatriculacion > anho - 1) {
-			bonificacion = 0.5;
+		if ((tMotor.equals(TipoMotor.HIBRIDO) && this.getFechaMatriculacion().isAfter(anho.minusYears(4)))
+				|| (tMotor.equals(TipoMotor.GAS) && this.getFechaMatriculacion().isAfter(anho.minusYears(1)))
+				|| tMotor.equals(TipoMotor.ELECTRICO)) {
+			bonificacion = tMotor.descuentoImpuesto;
 		}
 		
 		// Valores segun potencia.

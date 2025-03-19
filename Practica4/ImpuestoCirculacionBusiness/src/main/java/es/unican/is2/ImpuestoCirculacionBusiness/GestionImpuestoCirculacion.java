@@ -1,59 +1,49 @@
 package es.unican.is2.ImpuestoCirculacionBusiness;
 
+import java.util.List;
+
 import es.unican.is2.ImpuestoCirculacionCommon.Contribuyente;
 import es.unican.is2.ImpuestoCirculacionCommon.DataAccessException;
+import es.unican.is2.ImpuestoCirculacionCommon.IContribuyentesDAO;
 import es.unican.is2.ImpuestoCirculacionCommon.IInfoImpuestoCirculacion;
+import es.unican.is2.ImpuestoCirculacionCommon.IVehiculosDAO;
 import es.unican.is2.ImpuestoCirculacionCommon.OperacionNoValidaException;
 import es.unican.is2.ImpuestoCirculacionCommon.Vehiculo;
-import es.unican.is2.ImpuestoCirculacionDAOH2.ContribuyentesDAO;
-import es.unican.is2.ImpuestoCirculacionDAOH2.VehiculosDAO;
 
 /**
  * Clase de gestion de impuestos de circulacion.
  */
-public class GestionImpuestoCirculacion implements IInfoImpuestoCirculacion {
-	ContribuyentesDAO contribDAO;
-	VehiculosDAO vehicDAO;
-	
+public class GestionImpuestoCirculacion implements IInfoImpuestoCirculacion, IContribuyentesDAO, IVehiculosDAO {
 	/**
 	 * Crea un objeto de gestion.
-	 * @param contrib El DAO de datos de contribuyentes.
-	 * @param vehic El DAO de datos de vehiculos.
 	 */
-	public GestionImpuestoCirculacion(ContribuyentesDAO contrib, VehiculosDAO vehic) {
-		this.contribDAO = contrib;
-		this.vehicDAO = vehic;
-	}
+	public GestionImpuestoCirculacion() {}
 	
 	/**
 	 * Da de alta a un contribuyente en el sistema.
 	 * @param c El contribuyente a dar de alta.
 	 * @throws DataAccessException Si ocurre un error al acceder a la base de datos.
-	 * @throws OperacionNoValidaException Si el contribuyente indicado ya existe.
 	 */
-	public void altaContribuyente(Contribuyente c)
-			throws DataAccessException, OperacionNoValidaException {
-		if (this.contribDAO.contribuyente(c.getDni()) != null) {
-			throw new OperacionNoValidaException("Contribuyente existente!");
-		}
-		this.contribDAO.creaContribuyente(c);
+	public Contribuyente altaContribuyente(Contribuyente c) throws DataAccessException {
+		if (contribuyente(c.getDni()) != null) return null;
+		
+		creaContribuyente(c);
+		return c;
 	}
 	
 	/**
 	 * Elimina a un contribuyente del sistema.
 	 * @param dni El DNI del contribuyente a eliminar.
 	 * @throws DataAccessException Si ocurre un error al acceder a la base de datos.
-	 * @throws OperacionNoValidaException Si el contribuyente indicado no existe o
-	 * 		   tiene vehiculos en posesion.
 	 */
-	public void bajaContribuyente(String dni)
-			throws DataAccessException, OperacionNoValidaException {
-		Contribuyente c = this.contribDAO.contribuyente(dni);
-		if (c == null || !c.getVehiculos().isEmpty()) {
-			throw new
-				OperacionNoValidaException("Contribuyente inexistente o con vehiculos!");
-		}
-		this.contribDAO.eliminaContribuyente(dni);
+	public Contribuyente bajaContribuyente(String dni) throws DataAccessException, OperacionNoValidaException {
+		Contribuyente c = contribuyente(dni);
+		if (c == null) return null;
+		if (!c.getVehiculos().isEmpty())
+			throw new OperacionNoValidaException("El contribuyente tiene vehiculos!");
+		
+		eliminaContribuyente(dni);
+		return c;
 	}
 	
 	/**
@@ -61,18 +51,16 @@ public class GestionImpuestoCirculacion implements IInfoImpuestoCirculacion {
 	 * @param v El vehiculo a dar de alta.
 	 * @param dni El DNI del propietario del vehiculo.
 	 * @throws DataAccessException Si ocurre un error al acceder a la base de datos.
-	 * @throws OperacionNoValidaException Si el vehiculo introducido ya existe o el
-	 * 		   contribuyente no existe.
 	 */
-	public void altaVehiculo(Vehiculo v, String dni)
-			throws DataAccessException, OperacionNoValidaException {
-		if (this.vehicDAO.vehiculo(v.getId()) != null) {
-			throw new OperacionNoValidaException("Vehiculo existente!");
-		}
-		if (this.contribDAO.contribuyente(dni) == null) {
-			throw new OperacionNoValidaException("Contribuyente inexistente!");
-		}
-		this.vehicDAO.creaVehiculo(v);
+	public Vehiculo altaVehiculo(Vehiculo v, String dni) throws DataAccessException {
+		Contribuyente c = contribuyente(dni);
+		if (vehiculo(v.getId()) != null || c == null) return null;
+		
+		creaVehiculo(v);
+		c.getVehiculos().add(vehiculo(v.getId()));
+		actualizaContribuyente(c);
+		
+		return v;
 	}
 	
 	/**
@@ -80,18 +68,17 @@ public class GestionImpuestoCirculacion implements IInfoImpuestoCirculacion {
 	 * @param dni El DNI del propietario del vehiculo.
 	 * @param matricula La matricula del vehiculo.
 	 * @throws DataAccessException Si ocurre un error al acceder a la base de datos.
-	 * @throws OperacionNoValidaException Si el vehiculo no pertenece al contribuyente.
 	 */
-	public void bajaVehiculo(String dni, String matricula)
-			throws DataAccessException, OperacionNoValidaException {
+	public Vehiculo bajaVehiculo(String dni, String matricula) throws DataAccessException {
 		Contribuyente c = this.contribuyente(dni);
-		this.vehiculo(matricula);
+		Vehiculo v = vehiculo(matricula);
+		if (c == null || c.buscaVehiculo(matricula) == null || v == null) return null;
 		
-		if (c.buscaVehiculo(matricula) == null)
-			throw new
-				OperacionNoValidaException("Vehiculo no perteneciente a contribuyente!");
+		eliminaVehiculo(matricula);
+		c.getVehiculos().remove(v);
+		actualizaContribuyente(c);
 		
-		this.vehicDAO.eliminaVehiculo(matricula);
+		return v;
 	}
 	
 	/**
@@ -101,14 +88,21 @@ public class GestionImpuestoCirculacion implements IInfoImpuestoCirculacion {
 	 * @param dniNuevo El DNI del contribuyente al que pertenecera el vehiculo.
 	 * @throws DataAccessException Si ocurre un error al acceder a la base de datos.
 	 */
-	public void cambiarTitularVehiculo(String matricula,
+	public boolean cambiarTitularVehiculo(String matricula,
 			String dniActual, String dniNuevo) throws DataAccessException {
-		Contribuyente c1 = this.contribuyente(dniActual);
-		Contribuyente c2 = this.contribuyente(dniNuevo);
+		Contribuyente c1 = contribuyente(dniActual);
+		Contribuyente c2 = contribuyente(dniNuevo);
 		Vehiculo v = this.vehiculo(matricula);
+		if (v == null || c1 == null || c2 == null
+				|| c1.buscaVehiculo(matricula) == null || c2.buscaVehiculo(matricula) != null)
+			return false;
 		
-		// TODO No hay metodos que permitan modificar los vehiculos de un contribuyente
-		// 		en la declaracion de la aplicacion.
+		c1.getVehiculos().remove(v);
+		c2.getVehiculos().add(v);		
+		actualizaContribuyente(c1);
+		actualizaContribuyente(c2);
+		
+		return true;
 	}
 	
 	/**
@@ -116,13 +110,10 @@ public class GestionImpuestoCirculacion implements IInfoImpuestoCirculacion {
 	 * @param dni El DNI del contribuyente.
 	 * @return El contribuyente cuyo DNI haya sido introducido.
 	 * @throws DataAccessException Si ocurre un error al acceder a la base de datos.
-	 * @throws OperacionNoValidaException Si no existe un contribuyente con ese DNI.
 	 */
-	public Contribuyente contribuyente(String dni)
-			throws DataAccessException, OperacionNoValidaException {
-		Contribuyente c = this.contribDAO.contribuyente(dni);
-		if (c == null)
-			throw new OperacionNoValidaException("DNI no asociado a contribuyente!");
+	public Contribuyente contribuyente(String dni) throws DataAccessException {
+		Contribuyente c = contribuyente(dni);
+		if (c == null) return null;
 		
 		return c;
 	}
@@ -132,14 +123,71 @@ public class GestionImpuestoCirculacion implements IInfoImpuestoCirculacion {
 	 * @param matricula La matricula a buscar.
 	 * @return El vehiculo cuya matricula haya sido introducida.
 	 * @throws DataAccessException Si ocurre un error al acceder a la base de datos.
-	 * @throws OperacionNoValidaException Si no existe un vehiculo con esa matricula.
 	 */
-	public Vehiculo vehiculo(String matricula)
-			throws DataAccessException, OperacionNoValidaException {
-		Vehiculo v = this.vehicDAO.vehiculoPorMatricula(matricula);
-		if (v == null)
-			throw new OperacionNoValidaException("Matricula no asociada a vehiculo!");
+	public Vehiculo vehiculo(String matricula) throws DataAccessException {
+		Vehiculo v = vehiculoPorMatricula(matricula);
+		if (v == null) return null;
 		
 		return v;
+	}
+
+	@Override
+	public Vehiculo creaVehiculo(Vehiculo v) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vehiculo eliminaVehiculo(String matricula) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vehiculo actualizaVehiculo(Vehiculo nuevo) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vehiculo vehiculoPorMatricula(String matricula) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Vehiculo> vehiculos() throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vehiculo vehiculo(long id) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Contribuyente creaContribuyente(Contribuyente c) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Contribuyente actualizaContribuyente(Contribuyente nuevo) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Contribuyente eliminaContribuyente(String dni) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Contribuyente> contribuyentes() throws DataAccessException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

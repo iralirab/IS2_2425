@@ -15,7 +15,6 @@ import es.unican.is2.ImpuestoCirculacionCommon.Vehiculo;
  * instancias de Empleado
  */
 public class VehiculoMapper {
-
 	/**
 	 * Recibe una fila de la BBDD correspondinete a un vehiculo 
 	 * y devuelve un objeto Vehiculo con los datos correspondientes

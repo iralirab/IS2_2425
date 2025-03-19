@@ -16,7 +16,7 @@ public class Runner {
 		VehiculosDAO vehiculosDAO = new VehiculosDAO();
 		
 		// Componentes capa negocio
-		GestionImpuestoCirculacion negocio = new GestionImpuestoCirculacion(contribuyentesDAO, vehiculosDAO);
+		GestionImpuestoCirculacion negocio = new GestionImpuestoCirculacion();
 		
 		// Componentes casa presentacion
 		VistaFuncionario vista = new VistaFuncionario(negocio);
