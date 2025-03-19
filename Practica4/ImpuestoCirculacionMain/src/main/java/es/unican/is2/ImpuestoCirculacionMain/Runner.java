@@ -6,7 +6,7 @@ import es.unican.is2.ImpuestoCirculacionDAOH2.VehiculosDAO;
 import es.unican.is2.ImpuestoCirculacionGUI.VistaFuncionario;
 
 /**
- * Clase principal que construye la aplicaci�n de tres capas y lanza su ejecuci�n
+ * Clase principal que construye la aplicacion de tres capas y lanza su ejecucion
  */
 public class Runner {
 
@@ -16,12 +16,13 @@ public class Runner {
 		VehiculosDAO vehiculosDAO = new VehiculosDAO();
 		
 		// Componentes capa negocio
-		GestionImpuestoCirculacion negocio = new GestionImpuestoCirculacion();
+		GestionImpuestoCirculacion negocio =
+				new GestionImpuestoCirculacion(contribuyentesDAO, vehiculosDAO);
 		
 		// Componentes casa presentacion
 		VistaFuncionario vista = new VistaFuncionario(negocio);
 		
-		// Lanza ejecuci�n
+		// Lanza ejecucion
 		vista.setVisible(true);
 	}
 
