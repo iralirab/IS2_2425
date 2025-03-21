@@ -10,5 +10,14 @@
   		<artifactId>ImpuestoCirculacionCommon</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
+  	<!--
+		La version de Java que mi distribucion de Linux tiene en
+		sus repositorios no es compatible con 2.3.XXX...
+  	-->
+  	<dependency>
+  		<groupId>com.h2database</groupId>
+  		<artifactId>h2</artifactId>
+  		<version>2.2.224</version>
+  	</dependency>
   </dependencies>
 </project>

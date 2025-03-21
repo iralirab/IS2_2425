@@ -44,7 +44,6 @@ public class VistaFuncionario extends JFrame {
 	 * Create the frame.
 	 */
 	public VistaFuncionario(IInfoImpuestoCirculacion info) {
-
 		this.info = info;
 		init();
 	}
@@ -97,6 +96,7 @@ public class VistaFuncionario extends JFrame {
 		txtDniContribuyente.setBounds(10, 51, 113, 20);
 		contentPane.add(txtDniContribuyente);
 		txtDniContribuyente.setColumns(10);
+		txtDniContribuyente.setName("txtDniContribuyente");
 
 		JLabel lblDniContribuyente = new JLabel("DNI Contribuyente");
 		lblDniContribuyente.setBounds(21, 27, 139, 14);
@@ -121,16 +121,17 @@ public class VistaFuncionario extends JFrame {
 		try {
 			c = info.contribuyente(dni);
 			if (c != null) {
-				txtNombreContribuyente.setText(c.getNombre() + " " + c.getApellido2() + " " + c.getApellido1());
+				txtNombreContribuyente.setText(c.getNombre() + " "
+						+ c.getApellido1() + " " + c.getApellido2());
 				txtTotalContribuyente.setText(df.format(c.totalImpuestoCirculacion()));
 				listModel.removeAllElements();
-				for (int i = 1; i < c.getVehiculos().size(); i++) {
+				for (int i = 0; i < c.getVehiculos().size(); i++) {
 					Vehiculo v = c.getVehiculos().get(i);
 					listModel.addElement(v.getMatricula());
 				}
 			} else {
 				txtNombreContribuyente.setText("DNI Incorrecto");
-				txtTotalContribuyente.setText("0");
+				txtTotalContribuyente.setText("0.00");
 				listModel.removeAllElements();
 			}
 
