@@ -39,7 +39,8 @@ public class ListaOrdenada<E extends Comparable<E>> implements IListaOrdenada<E>
 	}
 
 	public void clear() {
-		for (int i=0; i<lista.size(); i++) {
+		// O simplemente lista.clear()...
+		for (int i = lista.size() - 1; i >= 0; i--) {
 			lista.remove(i);
 		}
 	}

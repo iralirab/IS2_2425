@@ -107,4 +107,19 @@ public class ListaOrdenadaTest {
 		assertEquals(1, sut.get(0));
 		assertEquals(2, sut.get(1));
 	}
+	
+	@Test
+	public void testClear() {
+		// [].
+		sut.clear();
+		assertEquals(0, sut.size());
+		
+		// [1,2,3].
+		sut.add(1);
+		sut.add(2);
+		sut.add(3);
+		
+		sut.clear();
+		assertEquals(0, sut.size());
+	}
 }
