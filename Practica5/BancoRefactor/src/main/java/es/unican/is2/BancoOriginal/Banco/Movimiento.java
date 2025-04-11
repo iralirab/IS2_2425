@@ -6,35 +6,42 @@ public class Movimiento {
 	private String concepto;
 	private LocalDateTime fecha;
 	private double importe;
-
-	public double getI() {
+	
+	public Movimiento(String concepto, double importe) {
+		this.fecha = LocalDateTime.now();
+		this.concepto = concepto;
+		this.importe = importe;
+	} // WMC=1 // CCog=0
+	
+	public double getImporte() {
 		return importe;
 	} // WMC=1 // CCog=0
 
-	public void setI(double newMImporte) {
+	public void setImporte(double newMImporte) {
 		importe = newMImporte;
 	} // WMC=1 // CCog=0
 	
-	public String getC() {
+	public String getConcepto() {
 		return concepto;
 	} // WMC=1 // CCog=0
 
-	public void setC(String newMConcepto) {
+	public void setConcepto(String newMConcepto) {
 		concepto = newMConcepto;
 	} // WMC=1 // CCog=0
 
-	public LocalDateTime getF() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	} // WMC=1 // CCog=0
 
-	public void setF(LocalDateTime newMFecha) {
+	public void setFecha(LocalDateTime newMFecha) {
 		fecha = newMFecha;
 	} // WMC=1 // CCog=0
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		Movimiento other = (Movimiento)obj;
-		return (concepto.equals(other.concepto) && fecha.equals(other.fecha)&& importe==other.importe);
+		return (concepto.equals(other.concepto)
+				&& fecha.equals(other.fecha)
+				&& importe == other.importe);
 	} // WMC=4 // CCog=2
-	
 }

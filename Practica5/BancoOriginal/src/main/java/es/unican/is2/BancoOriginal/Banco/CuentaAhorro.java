@@ -12,14 +12,14 @@ public class CuentaAhorro extends Cuenta {
 	private LocalDate caducidadCredito;
 	private double limiteDebito;
 
-	public CuentaAhorro(String numCuenta)  throws datoErroneoException {
+	public CuentaAhorro(String numCuenta) throws datoErroneoException {
 		super(numCuenta);
 		Movimientos = new LinkedList<Movimiento>();
 		limiteDebito = 1000;
 	} // WMC=1 // CCog=0
 
 	public void ingresar(double x) throws datoErroneoException {
-		if (x <= 0)
+		if (x <= 0) // WMC+1 // CCog+1
 			throw new datoErroneoException("No se puede ingresar una cantidad negativa");
 		Movimiento m = new Movimiento();
 		LocalDateTime now = LocalDateTime.now();
@@ -27,7 +27,7 @@ public class CuentaAhorro extends Cuenta {
 		m.setC("Ingreso en efectivo");
 		m.setI(x);
 		this.Movimientos.add(m);
-	} // WMC=1 // CCog=0
+	} // WMC=2 // CCog=1
 
 	public void retirar(double x) throws saldoInsuficienteException, datoErroneoException {
 		if (x <= 0) // WMC+1 // CCog+1
