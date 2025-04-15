@@ -1,4 +1,4 @@
-package es.unican.is2.BancoOriginal.Banco;
+package es.unican.is2.BancoRefactor.Banco;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+//import es.unican.is2.BancoRefactor.Banco.CuentaValores;
+//import es.unican.is2.BancoRefactor.Banco.Valor;
 
 public class CuentaValoresTest {
 	
@@ -36,8 +39,9 @@ public class CuentaValoresTest {
 		assertTrue(sut.getValores().size()==2);
 		assertEquals(sut.getValores().get(1), v);
 		
+		assertEquals(20026.25, sut.getSaldo());
+		
 		// CASOS NO VALIDOS
 		assertFalse(sut.anhadeValor(new Valor("Telepizza", 10, 2.5)));
-		
 	}
 }

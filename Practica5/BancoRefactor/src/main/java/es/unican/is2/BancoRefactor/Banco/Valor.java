@@ -1,4 +1,4 @@
-package es.unican.is2.BancoOriginal.Banco;
+package es.unican.is2.BancoRefactor.Banco;
 
 /**
  * Clase que representa un valor en bolsa (paquete de acciones). 

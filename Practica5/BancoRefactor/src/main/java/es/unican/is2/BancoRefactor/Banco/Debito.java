@@ -1,4 +1,4 @@
-package es.unican.is2.BancoOriginal.Banco;
+package es.unican.is2.BancoRefactor.Banco;
 
 public class Debito extends Tarjeta {
 	private static final double LIMITE_DEBITO = 1000;

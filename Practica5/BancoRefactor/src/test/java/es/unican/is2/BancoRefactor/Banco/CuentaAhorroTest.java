@@ -1,12 +1,8 @@
-package es.unican.is2.BancoOriginal.Banco;
+package es.unican.is2.BancoRefactor.Banco;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
-// import java.time.LocalDate;
-// import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
