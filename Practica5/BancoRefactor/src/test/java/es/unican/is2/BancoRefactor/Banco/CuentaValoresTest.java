@@ -32,12 +32,12 @@ public class CuentaValoresTest {
 		Valor v = new Valor("Telepizza", 25, 1.05);
 		assertTrue(sut.anhadeValor(v));
 		assertTrue(sut.getValores().size()==1);
-		assertEquals(sut.getValores().get(0), v);
+		assertEquals(v, sut.getValores().get(0));
 		
 		v = new Valor("BancoSantander", 100, 200);
 		assertTrue(sut.anhadeValor(v));
 		assertTrue(sut.getValores().size()==2);
-		assertEquals(sut.getValores().get(1), v);
+		assertEquals(v, sut.getValores().get(1));
 		
 		assertEquals(20026.25, sut.getSaldo());
 		

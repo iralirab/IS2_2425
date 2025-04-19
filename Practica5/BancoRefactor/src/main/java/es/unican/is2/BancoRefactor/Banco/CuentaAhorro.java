@@ -6,34 +6,34 @@ import java.util.List;
 public class CuentaAhorro extends Cuenta {
 	private List<Movimiento> Movimientos;
 
-	public CuentaAhorro(String numCuenta) throws datoErroneoException {
+	public CuentaAhorro(String numCuenta) throws DatoErroneoException {
 		super(numCuenta);
 		Movimientos = new LinkedList<Movimiento>();
 	} // WMC=1 // CCog=0
 
-	public void ingresar(double monto) throws datoErroneoException {
+	public void ingresar(double monto) throws DatoErroneoException {
 		this.ingresar("Ingreso en efectivo", monto);
 	} // WMC=1 // CCog=0
 
 	public void retirar(double monto)
-			throws saldoInsuficienteException, datoErroneoException {
+			throws SaldoInsuficienteException, DatoErroneoException {
 		this.retirar("Retirada de efectivo", monto);
 	} // WMC=1 // CCog=0
 
 	public void ingresar(String concepto, double monto)
-			throws datoErroneoException {
+			throws DatoErroneoException {
 		if (monto <= 0) // WMC+1 // CCog+1
-			throw new datoErroneoException("No se puede ingresar una cantidad negativa");
+			throw new DatoErroneoException("No se puede ingresar una cantidad negativa");
 		
 		this.addMovimiento(new Movimiento(concepto, monto));
 	} // WMC=2 // CCog=1
 
 	public void retirar(String concepto, double monto)
-			throws saldoInsuficienteException, datoErroneoException {
+			throws SaldoInsuficienteException, DatoErroneoException {
 		if (getSaldo() < monto) // WMC+1 // CCog+1
-			throw new saldoInsuficienteException("Saldo insuficiente");
+			throw new SaldoInsuficienteException("Saldo insuficiente");
 		if (monto <= 0) // WMC+1 // CCog+1
-			throw new datoErroneoException("No se puede retirar una cantidad negativa");
+			throw new DatoErroneoException("No se puede retirar una cantidad negativa");
 		
 		this.addMovimiento(new Movimiento(concepto, -monto));
 	} // WMC=3 // CCog=2

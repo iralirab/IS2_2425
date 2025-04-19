@@ -39,8 +39,11 @@ public class Valor {
 	
 	@Override
 	public boolean equals(Object obj) {
+		if (obj == null) // WMC+1 // CCog+1
+			return false;
+		
 		Valor other = (Valor)obj;
 		return (entidad.equals(other.entidad) && numAcciones==other.numAcciones);
-	} // WMC=3 // CCog=2
+	} // WMC=4 // CCog=3
 
 }

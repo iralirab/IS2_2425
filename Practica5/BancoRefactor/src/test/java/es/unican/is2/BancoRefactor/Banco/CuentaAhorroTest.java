@@ -27,8 +27,8 @@ public class CuentaAhorroTest {
 	@Test
 	public void testConstructor() {
 		// assertEquals(sut.getLimiteDebito(), 1000); Ya no tiene sentido.
-		assertEquals(sut.getMovimientos().size(), 0);
-		assertEquals(sut.getNumCuenta(), "794311");
+		assertEquals(0, sut.getMovimientos().size());
+		assertEquals("794311", sut.getNumCuenta());
 		// assertNull(sut.getCaducidadDebito());
 		// assertNull(sut.getCaducidadCredito());		
 	}
@@ -62,8 +62,8 @@ public class CuentaAhorroTest {
 		try {
 			sut.retirar(-10);
 			fail("Debe lanzar DatoErroneoException");
-		} catch (datoErroneoException e) {
-		} catch (saldoInsuficienteException e) {
+		} catch (DatoErroneoException e) {
+		} catch (SaldoInsuficienteException e) {
 			fail("Debe lanzar DatoErroneoException");
 		}
 		
@@ -73,10 +73,10 @@ public class CuentaAhorroTest {
 			sut.retirar(50);
 			assertTrue(sut.getSaldo()==50);
 			assertTrue(sut.getMovimientos().size()==2);
-			assertEquals(sut.getMovimientos().get(1).getConcepto(), "Retirada de efectivo");
-		} catch (datoErroneoException e) {
+			assertEquals("Retirada de efectivo", sut.getMovimientos().get(1).getConcepto());
+		} catch (DatoErroneoException e) {
 			fail("No debe lanzar DatoErroneoException");
-		} catch (saldoInsuficienteException e) {
+		} catch (SaldoInsuficienteException e) {
 			fail("No debe lanzar SaldoInsuficienteException");
 		}
 		
@@ -84,9 +84,9 @@ public class CuentaAhorroTest {
 		try {
 			sut.retirar(100);
 			fail("Debe lanzar SaldoInsuficienteException");
-		} catch (datoErroneoException e) {
+		} catch (DatoErroneoException e) {
 			fail("Debe lanzar SaldoInsuficienteException");
-		} catch (saldoInsuficienteException e) { }
+		} catch (SaldoInsuficienteException e) { }
 	
 	}
 	
@@ -96,20 +96,20 @@ public class CuentaAhorroTest {
 		try {
 			sut.ingresar(-1);
 			fail("Debe lanzar DatoErroneoException");
-		} catch (datoErroneoException e) {
+		} catch (DatoErroneoException e) {
 		}
 
 		try {
 			sut.ingresar(0.01);
 			assertTrue(sut.getSaldo()==0.01);
 			assertTrue(sut.getMovimientos().size()==1);
-			assertEquals(sut.getMovimientos().get(0).getConcepto(),"Ingreso en efectivo");
+			assertEquals("Ingreso en efectivo", sut.getMovimientos().get(0).getConcepto());
 			
 			sut.ingresar(100);
 			assertTrue(sut.getSaldo()==100.01);
 			assertTrue(sut.getMovimientos().size()==2);
 			
-		} catch (datoErroneoException e) {
+		} catch (DatoErroneoException e) {
 			fail("No debe lanzar la excepci�n");
 		}
 		
@@ -123,7 +123,7 @@ public class CuentaAhorroTest {
 		try {
 			sut.ingresar("Ingreso", -1);
 			fail("Debe lanzar DatoErroneoException");
-		} catch (datoErroneoException e) {
+		} catch (DatoErroneoException e) {
 		}
 
 		// Test ingresar el limite
@@ -131,14 +131,14 @@ public class CuentaAhorroTest {
 			sut.ingresar("Ingreso1", 0.01);
 			assertTrue(sut.getSaldo()==0.01);
 			assertTrue(sut.getMovimientos().size()==1);
-			assertEquals(sut.getMovimientos().get(0).getConcepto(), "Ingreso1");
+			assertEquals("Ingreso1", sut.getMovimientos().get(0).getConcepto());
 			
 			sut.ingresar("Ingreso2", 100);
 			assertTrue(sut.getSaldo()==100.01);
 			assertTrue(sut.getMovimientos().size()==2);
-			assertEquals(sut.getMovimientos().get(1).getConcepto(), "Ingreso2");
+			assertEquals("Ingreso2", sut.getMovimientos().get(1).getConcepto());
 			
-		} catch (datoErroneoException e) {
+		} catch (DatoErroneoException e) {
 			fail("No debe lanzar la excepci�n");
 		}
 		
@@ -150,8 +150,8 @@ public class CuentaAhorroTest {
 		try {
 			sut.retirar("Retirada", -10);
 			fail("Debe lanzar DatoErroneoException");
-		} catch (datoErroneoException e) {
-		} catch (saldoInsuficienteException e) {
+		} catch (DatoErroneoException e) {
+		} catch (SaldoInsuficienteException e) {
 			fail("Deber�a lanzar DatoErroneoException");
 		}
 		
@@ -161,10 +161,10 @@ public class CuentaAhorroTest {
 			sut.retirar("Retirada1", 50);
 			assertTrue(sut.getSaldo()==50);
 			assertTrue(sut.getMovimientos().size()==2);
-			assertEquals(sut.getMovimientos().get(1).getConcepto(),"Retirada1");
-		} catch (datoErroneoException e) {
+			assertEquals("Retirada1", sut.getMovimientos().get(1).getConcepto());
+		} catch (DatoErroneoException e) {
 			fail("No debe lanzar DatoErroneoException");
-		} catch (saldoInsuficienteException e) {
+		} catch (SaldoInsuficienteException e) {
 			fail("No debe lanzar SaldoInsuficienteException");
 		}
 		
@@ -172,9 +172,9 @@ public class CuentaAhorroTest {
 		try {
 			sut.retirar("Retirada2", 100);
 			fail("Debe lanzar SaldoInsuficienteException");
-		} catch (datoErroneoException e) {
+		} catch (DatoErroneoException e) {
 			fail("Debe lanzar SaldoInsuficienteException");
-		} catch (saldoInsuficienteException e) {
+		} catch (SaldoInsuficienteException e) {
 			
 		}
 	

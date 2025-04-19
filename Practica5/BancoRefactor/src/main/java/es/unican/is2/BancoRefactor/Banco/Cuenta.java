@@ -4,7 +4,7 @@ public abstract class Cuenta {
 	
 	private String numCuenta;
 	
-	public Cuenta(String numCuenta) {
+	protected Cuenta(String numCuenta) {
 		this.numCuenta = numCuenta;
 	} // WMC=1 // CCog=0
 	

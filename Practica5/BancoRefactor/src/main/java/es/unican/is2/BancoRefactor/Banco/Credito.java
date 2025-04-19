@@ -5,28 +5,28 @@ import java.util.List;
 public class Credito extends Tarjeta {
 	private static final double COMISION_CREDITO = 0.05;
 	
-	private double credito;
+	private double saldo;
 	private List<Movimiento> MovimientosMensuales;
 	private List<Movimiento> historicoMovimientos;
 
 	public Credito(String numero, String titular, String cvc,
-			CuentaAhorro cuentaAsociada, double credito) {
+			CuentaAhorro cuentaAsociada, double saldo) {
 		super(numero, titular, cvc, cuentaAsociada);
-		this.credito = credito;
+		this.saldo = saldo;
 	} // WMC=1 // CCog=0
 
 	/**
 	 * Retirada de dinero en cajero con la tarjeta
 	 * @param monto Cantidad a retirar. Se aplica una comisi�n del 5%.
-	 * @throws saldoInsuficienteException
-	 * @throws datoErroneoException
+	 * @throws SaldoInsuficienteException
+	 * @throws DatoErroneoException
 	 */
 	@Override
-	public void retirar(double monto) throws saldoInsuficienteException, datoErroneoException {
+	public void retirar(double monto) throws SaldoInsuficienteException, DatoErroneoException {
 		if (monto<0) // WMC+1 // CCog+1
-			throw new datoErroneoException("No se puede retirar una cantidad negativa");
-		if (getGastosAcumulados() + monto > credito) // WMC+1 // CCog+1
-			throw new saldoInsuficienteException("Credito insuficiente");
+			throw new DatoErroneoException("No se puede retirar una cantidad negativa");
+		if (getGastosAcumulados() + monto > saldo) // WMC+1 // CCog+1
+			throw new SaldoInsuficienteException("Credito insuficiente");
 		
 		monto += monto * COMISION_CREDITO; // Comision por operacion con tarjetas credito
 		MovimientosMensuales.add(new Movimiento("Retirada en cajero", -monto));
@@ -34,11 +34,11 @@ public class Credito extends Tarjeta {
 
 	@Override
 	public void pagoEnEstablecimiento(String datos, double monto)
-			throws saldoInsuficienteException, datoErroneoException {
+			throws SaldoInsuficienteException, DatoErroneoException {
 		if (monto<0) // WMC+1 // CCog+1
-			throw new datoErroneoException("No se puede retirar una cantidad negativa");
-		if (getGastosAcumulados() + monto > credito) // WMC+1 // CCog+1
-			throw new saldoInsuficienteException("Saldo insuficiente");
+			throw new DatoErroneoException("No se puede retirar una cantidad negativa");
+		if (getGastosAcumulados() + monto > saldo) // WMC+1 // CCog+1
+			throw new SaldoInsuficienteException("Saldo insuficiente");
 
 		MovimientosMensuales.add(new Movimiento("Compra a credito en: " + datos, -monto));
 	} // WMC=3 // CCog=2

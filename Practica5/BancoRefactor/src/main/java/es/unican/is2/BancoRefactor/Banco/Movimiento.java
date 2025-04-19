@@ -39,9 +39,12 @@ public class Movimiento {
 	
 	@Override
 	public boolean equals(Object obj) {
-		Movimiento other = (Movimiento)obj;
+		if (obj == null) // WMC+1 // CCog+1
+			return false;
+		
+		Movimiento other = (Movimiento) obj;
 		return (concepto.equals(other.concepto)
 				&& fecha.equals(other.fecha)
 				&& importe == other.importe);
-	} // WMC=4 // CCog=2
+	} // WMC=5 // CCog=3
 }
